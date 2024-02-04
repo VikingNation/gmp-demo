@@ -1,44 +1,27 @@
-CC = gcc
-RM = rm -rf
-TAR = tar
-MKDIR = mkdir
-CHMOD = chmod
-CP = cp
-MV = mv
+CC=gcc
+CXX=g++
+RM=rm -f
 
-PROGNAME = Gmp_demo
-EXEC = gmpdemo
-PACKAGE = $(PROGNAME)
-VERSION = 0.1
-DISTDIR = $(PACKAGE)-$(VERSION)
-HEADERS = gmp.h
-SOURCES = main.c
+CPPFLAGS=-g -Wall -I/home/jason/opt/include
+LDFLAGS=-g 
+LDFLAGS+=-L/home/jason/opt/lib
+LDLIBS=-lgmp
 
-GMP_PREFIX=$(HOME)/opt
+CFLAGS=-Wall
+CFLAGS+=-I/home/jason/opt/include
+
+gmpDemo: main.o GmpClass.o
+	g++ -o gmpDemo main.o GmpClass.o $(LDFLAGS) $(LDLIBS)
 
 
-LDFLAGS = -lgmp -L$(GMP_PREFIX)/lib
-CFLAGS = -Wall -I$(GMP_PREFIX)/include
+main.o: main.cxx 
+	g++ -c main.cxx $(CFLAGS)
 
-GMP_PREFIX=$(HOME)/opt
-
-OBJ = $(SOURCES:.c=.o)
-
-DISTFILES = $(SOURCES) Makefile $(HEADERS)
-
-all: $(EXEC)
-
-$(EXEC): $(OBJ)
-	$(CC) $(OBJ) $(LDFLAGS) -o $(EXEC)
-
-%.o:%.c $(HEADERS)
-	$(CC) -c $< $(CFLAGS)
-
-#dist: distdir
-#	$(CHMOD) -R a+r $(DISTDIR)
-#	$(TAR) zcvf $(DISTDIR).tar.gz $(DISTDIR)
-#	$(RM) $(DISTDIR)
+GmpClass.o: GmpClass.cxx GmpClass.hpp
+	g++ -c GmpClass.cxx $(CFLAGS)
 
 clean:
-	$(RM) $(PROGNAME) $(OBJ) *~ 
+	$(RM) main.o GmpClass.o gmpDemo
 
+test:
+	valgrind ./gmpDemo
