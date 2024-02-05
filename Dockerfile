@@ -2,6 +2,8 @@
 
 FROM ubuntu:22.04
 
+RUN apt-get -y update && apt-get -y install python3 && apt-get -y install libgmpxx4ldbl
+
 WORKDIR /app
 COPY dist/example.py .
 COPY dist/_example.so .
