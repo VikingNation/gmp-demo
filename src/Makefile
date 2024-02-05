@@ -36,20 +36,17 @@ libGmpClass.so: GmpClass.o
 	g++ -o libGmpClass.so.$(MAJOR).$(MINOR) $(LDFLAGS) -fPIC -g GmpClass.o -lgmp -lgmpxx -shared 
 	ln -s libGmpClass.so.$(MAJOR).$(MINOR) libGmpClass.so
 
-GmpClassPy: GmpClass.cxx
+GmpClassPy: libGmpClass.so
 	swig -c++ -python example.i
 	g++ -c example_wrap.cxx $(CCFLAGS) -I$(PYINC)
 	ld -shared example_wrap.o $(LDFLAGS) $(LDLIBS) -o _example.so
 
 dist: 
 	mkdir -p ../dist
-	cp gmpDemo ../dist
-	cp libGmpClass.so.$(MAJOR).$(MINOR) ../dist
-	cp example.py ../dist
-	cp _example.so ../dist
+	tar -czf ../dist/gmpDemo.tar.gz gmpDemo libGmpClass.so.$(MAJOR).$(MINOR) example.py _example.so gmpDemo.py
 
 distclean:
-	$(RM) ../dist/*
+	$(RM) ../dist/gmpDemo.tar.gz
 
 clean:
 	$(RM) main.o GmpClass.o gmpDemo libGmpClass.* example.py example_wrap.cxx example_wrap.o _example.so __pycache__
