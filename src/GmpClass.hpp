@@ -9,7 +9,8 @@ class GmpClass {
     void Multiply(); // Run Multiply
     void Print(); // Display result of multiply
     int setString(const char *a);
-    char *getString();    
+    char *getString();
+
     GmpClass(); // constructor
     ~GmpClass(); // ddescructor
 
