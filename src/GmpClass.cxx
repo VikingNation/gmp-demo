@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 GmpClass::GmpClass() {
 
@@ -38,6 +39,24 @@ int GmpClass::setString(const char *a) {
 	//fprintf(stdout, "Size of buff = %i\n", sizeOfBuff);
 	return 0;
 }
+
+// The following leads to a memory leak
+char *GmpClass::getCopyString() {
+	char *temp=NULL;
+
+	if (buff != NULL) {
+		temp=(char *)malloc(strlen(buff)+1);
+		strcpy(temp,buff);
+	}
+	return temp;
+}
+
+// The following isa safe copy
+const std::string GmpClass::safeCopyString() {
+	std::string s(buff);
+	return s;
+}
+
 GmpClass::~GmpClass () {
   mpz_clear(x);
   mpz_clear(y);

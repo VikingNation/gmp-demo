@@ -10,7 +10,9 @@ class GmpClass {
     void Print(); // Display result of multiply
     int setString(const char *a);
     char *getString();
+    char *getCopyString();
 
+    const std::string safeCopyString();
     GmpClass(); // constructor
     ~GmpClass(); // ddescructor
 

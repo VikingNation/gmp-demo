@@ -53,3 +53,4 @@ clean:
 
 test:
 	valgrind ./gmpDemo
+	valgrind python3 gmpDemo.py --leak-check=full
