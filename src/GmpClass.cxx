@@ -1,5 +1,8 @@
 #include "GmpClass.hpp"
 
+#include <stdlib.h>
+#include <string.h>
+
 GmpClass::GmpClass() {
 
   mpz_init_set_str(x, "7612058254738945", 10);
@@ -22,8 +25,24 @@ void GmpClass::Print () {
 
 }
 
+char *GmpClass::getString(){
+	return buff;
+}
+
+int GmpClass::setString(const char *a) {
+	sizeOfBuff = strlen(a)+1;
+	buff=(char *) malloc(sizeOfBuff);
+	strcpy(buff, a);
+
+	//fprintf(stdout, "buff = %s\n", buff);
+	//fprintf(stdout, "Size of buff = %i\n", sizeOfBuff);
+	return 0;
+}
 GmpClass::~GmpClass () {
   mpz_clear(x);
   mpz_clear(y);
   mpz_clear(result);
+  if (buff != NULL) {
+    free(buff);
+  }
 }

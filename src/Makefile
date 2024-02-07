@@ -34,7 +34,7 @@ GmpClass.o: GmpClass.cxx GmpClass.hpp
 
 libGmpClass.so: GmpClass.o
 	g++ -o libGmpClass.so.$(MAJOR).$(MINOR) $(LDFLAGS) -fPIC -g GmpClass.o -lgmp -lgmpxx -shared 
-	ln -s libGmpClass.so.$(MAJOR).$(MINOR) libGmpClass.so
+	ln -s libGmpClass.so.$(MAJOR).$(MINOR) libGmpClass.so 2>/dev/null
 
 GmpClassPy: libGmpClass.so
 	swig -c++ -python example.i
