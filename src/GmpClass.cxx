@@ -5,15 +5,16 @@
 #include <string>
 
 GmpClass::GmpClass() {
-
-  mpz_init_set_str(x, "7612058254738945", 10);
-  mpz_init_set_str(y, "9263591128439081", 10);
-  mpz_init(result);
+  my = (Storage *) malloc(sizeof(Storage));
+  
+  mpz_init_set_str(my->x, "7612058254738945", 10);
+  mpz_init_set_str(my->y, "9263591128439081", 10);
+  mpz_init(my->result);
 
 }
 
 void GmpClass::Multiply () {
-   mpz_mul(result, x, y);
+   mpz_mul(my->result, my->x, my->y);
 }
 
 void GmpClass::Print () {
@@ -21,7 +22,7 @@ void GmpClass::Print () {
              "*\n"
              "    %Zd\n"
              "--------------------\n"
-             "%Zd\n", x, y, result);
+             "%Zd\n", my->x, my->y, my->result);
 
 
 }
@@ -58,9 +59,10 @@ const std::string GmpClass::safeCopyString() {
 }
 
 GmpClass::~GmpClass () {
-  mpz_clear(x);
-  mpz_clear(y);
-  mpz_clear(result);
+  mpz_clear(my->x);
+  mpz_clear(my->y);
+  mpz_clear(my->result);
+  free(my);
   if (buff != NULL) {
     free(buff);
   }

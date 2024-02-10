@@ -17,7 +17,7 @@ LDFLAGS=-g
 LDFLAGS+=-L/home/jason/opt/lib -L.
 LDLIBS=-lgmp -lgmpxx libGmpClass.so.$(MAJOR).$(MINOR)
 
-ALL: gmpDemo GmpClassPy dist
+ALL: gmpDemo GmpClassPy gmpDemo.tar.gz
 
 allclean: clean distclean
 
@@ -36,20 +36,27 @@ libGmpClass.so: GmpClass.o
 	g++ -o libGmpClass.so.$(MAJOR).$(MINOR) $(LDFLAGS) -fPIC -g GmpClass.o -lgmp -lgmpxx -shared 
 	ln -s libGmpClass.so.$(MAJOR).$(MINOR) libGmpClass.so 2>/dev/null
 
-GmpClassPy: libGmpClass.so
+GmpClassPy: example_wrap.o
+
+example_wrap.o: example.i
 	swig -c++ -python example.i
 	g++ -c example_wrap.cxx $(CCFLAGS) -I$(PYINC)
 	ld -shared example_wrap.o $(LDFLAGS) $(LDLIBS) -o _example.so
 
-dist: 
+#dist:   example.i
+#	mkdir -p ../dist
+#	tar -czf ../dist/gmpDemo.tar.gz gmpDemo libGmpClass.so.$(MAJOR).$(MINOR) example.py _example.so gmpDemo.py
+
+gmpDemo.tar.gz: gmpDemo 
 	mkdir -p ../dist
-	tar -czf ../dist/gmpDemo.tar.gz gmpDemo libGmpClass.so.$(MAJOR).$(MINOR) example.py _example.so gmpDemo.py
+	tar -czf gmpDemo.tar.gz gmpDemo libGmpClass.so.$(MAJOR).$(MINOR) example.py _example.so gmpDemo.py
+	cp gmpDemo.tar.gz ../dist
 
 distclean:
 	$(RM) ../dist/gmpDemo.tar.gz
 
 clean:
-	$(RM) main.o GmpClass.o gmpDemo libGmpClass.* example.py example_wrap.cxx example_wrap.o _example.so __pycache__
+	$(RM) main.o GmpClass.o gmpDemo libGmpClass.* example.py example_wrap.cxx example_wrap.o _example.so __pycache__ gmpDemo.tar.gz
 
 test:
 	valgrind ./gmpDemo

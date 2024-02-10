@@ -17,14 +17,13 @@ int main(void) {
   fprintf(stdout,"Here is the string %s\n", g->getString());
 
   //The line below is a memory leak
-  //buff=g->getCopyString();
-  //fprintf(stdout,"Here is a copy of the string %s\n", buff);
+  buff=g->getCopyString();
+  fprintf(stdout,"Here is a copy of the string %s\n", buff);
 
   safeBuff=g->safeCopyString();
   fprintf(stdout, "Here is a safe copy of the string %s\n",safeBuff.c_str());
 
-  //delete(safeBuff);
-  //delete(safeBuff);
+  delete(buff);
   delete(g);
   return 0;
 }

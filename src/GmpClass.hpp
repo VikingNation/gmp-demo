@@ -1,5 +1,6 @@
 
 #include <gmp.h>
+#include "Storage.hpp"
 
 #ifndef GMPCLASS_H_
 #define CMPCLASS_H_
@@ -17,7 +18,8 @@ class GmpClass {
     ~GmpClass(); // ddescructor
 
     private:
-    mpz_t x, y, result;
+    Storage *my;
+    //mpz_t x, y, result;
     char *buff=NULL;
     int sizeOfBuff;
     
